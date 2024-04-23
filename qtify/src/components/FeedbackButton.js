@@ -3,7 +3,7 @@ import Feedback from '../modules/FeedbackButton.module.css';
 
 const FeedbackButton = ({text}) => {
   const textStyle = {
-    fontFamily: 'Lato',
+    fontFamily: 'Poppins Sans-serif',
     fontSize: '17px',
     fontWeight: '700',
   };

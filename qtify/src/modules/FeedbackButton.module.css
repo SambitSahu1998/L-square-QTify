@@ -8,3 +8,7 @@
     color: #34C94B;
     margin-top: 13px;
   }
+
+.feedbackButton:hover{
+  cursor:pointer;
+}
