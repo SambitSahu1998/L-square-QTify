@@ -1,12 +1,16 @@
 import React from 'react';
-import '../modules/FeedbackButton.module.css';
-import {Button} from '@mui/material';
+import Feedback from '../modules/FeedbackButton.module.css';
 
 const FeedbackButton = ({text}) => {
+  const textStyle = {
+    fontFamily: 'Lato',
+    fontSize: '17px',
+    fontWeight: '700',
+  };
   return (
-    <Button variant="contained" className="feedback-button">
-        {text}
-    </Button>
+    <button variant="contained" className={Feedback.feedbackButton}>
+         <span style={textStyle}>{text}</span>
+    </button>
   )
 }
 
