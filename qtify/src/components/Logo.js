@@ -1,8 +1,9 @@
-import React from 'react';
+import React from "react";
+import styles from "../modules/Logo.module.css";
 
-const Logo = ({src, alt}) => {
+const Logo = ({ src, alt }) => {
   return (
-    <img src={src} alt={alt}/>
+      <img src={src} alt={alt} className={styles.logoImage}/>
   );
 };
 
