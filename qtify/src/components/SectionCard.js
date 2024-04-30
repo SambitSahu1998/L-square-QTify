@@ -8,7 +8,7 @@ const Section = ({ title, albums }) => {
   const [displayedAlbums, setDisplayedAlbums] = useState([]);
 
   useEffect(() => {
-    const initialDisplayedAlbums = albums.slice(0, 7);
+    const initialDisplayedAlbums = albums;
     setDisplayedAlbums(initialDisplayedAlbums);
   }, [albums]);
 
