@@ -3,11 +3,20 @@ import axios from "axios";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import Section from "./components/SectionCard";
-import { NEW_ALBUMS_API, TOP_ALBUMS_API } from "./apis/api";
+import {
+  GENRES_API,
+  NEW_ALBUMS_API,
+  SONGS_API,
+  TOP_ALBUMS_API,
+} from "./apis/api";
+import { Box } from "@mui/material";
 
 const App = () => {
   const [topAlbums, setTopAlbums] = useState([]);
   const [newAlbums, setNewAlbums] = useState([]);
+  const [allSongs, setAllSongs] = useState([]);
+  const [genres, setGenres] = useState([]);
+
   useEffect(() => {
     const fetchTopAlbums = async () => {
       try {
@@ -25,8 +34,26 @@ const App = () => {
         console.error("Error Fetching New Albums Array: ", error);
       }
     };
+    const fetchAllSongs = async () => {
+      try {
+        const response = await axios.get(SONGS_API);
+        setAllSongs(response.data);
+      } catch (error) {
+        console.error("Erro Fetching All Songs Array: ", error);
+      }
+    };
+    const fetchGenres = async () => {
+      try {
+        const response = await axios.get(GENRES_API);
+        setGenres(response.data.data);
+      } catch (error) {
+        console.error("Error Fetching The Genres Array: ", error);
+      }
+    };
     fetchTopAlbums();
     fetchNewAlbums();
+    fetchAllSongs();
+    fetchGenres();
   }, []);
 
   return (
@@ -37,6 +64,15 @@ const App = () => {
         <Section title="Top Albums" albums={topAlbums} />
         <div></div>
         <Section title="New Albums" albums={newAlbums} />
+        <div></div>
+        <Box
+          sx={{
+            borderTop: "2px solid #34C94B",
+            borderBottom: "2px solid #34C94B",
+          }}
+        >
+          <Section title="Songs" songs={allSongs} genres={genres}/>
+        </Box>
       </div>
     </div>
   );

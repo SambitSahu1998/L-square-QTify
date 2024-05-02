@@ -10,7 +10,7 @@ import styles from "../modules/Carousel.module.css";
 
 SwiperCore.use([Navigation]);
 
-const Carousel = ({ cards }) => {
+const Carousel = ({ cards, isSongSection }) => {
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [swiper, setSwiper] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -56,7 +56,11 @@ const Carousel = ({ cards }) => {
       >
         {cards.map((card, index) => (
           <SwiperSlide key={index}>
-            <Card album={card} />
+            {
+            isSongSection === "Songs" && (
+              <Card album={card} isSongSection={isSongSection} />
+            )}
+            {isSongSection !== "Songs" && <Card album={card} />}
           </SwiperSlide>
         ))}
       </Swiper>
@@ -69,7 +73,7 @@ const Carousel = ({ cards }) => {
         <RightNavigationButton
           className={styles.rightButton}
           onClick={goNext}
-          disabled={(currentIndex+slidesPerView) === cards.length}
+          disabled={currentIndex + slidesPerView === cards.length}
         />
       </div>
     </div>
