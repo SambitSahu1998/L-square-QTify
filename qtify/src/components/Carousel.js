@@ -60,7 +60,7 @@ const Carousel = ({ cards, isSongSection }) => {
             isSongSection === "Songs" && (
               <Card album={card} isSongSection={isSongSection} />
             )}
-            {isSongSection !== "Songs" && <Card album={card} />}
+            {isSongSection !== "Songs" && <Card album={card} numSongs={card.songs.length}/>}
           </SwiperSlide>
         ))}
       </Swiper>
