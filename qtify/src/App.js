@@ -55,10 +55,10 @@ const App = () => {
       }
     };
     const fetchAPI = async () => {
-      try{
+      try {
         const response = await axios.get(FAQ_API);
         setFaqsAcc(response.data.data);
-      }catch(error){
+      } catch (error) {
         console.error("Error Fetching The FAQ Array: ", error);
       }
     };
@@ -71,9 +71,9 @@ const App = () => {
 
   const [selectedSong, setSelectedSong] = useState(null);
 
-  const handleCardClick = (song) =>{
+  const handleCardClick = (song) => {
     setSelectedSong(song);
-  }
+  };
 
   return (
     <div>
@@ -90,11 +90,21 @@ const App = () => {
             borderBottom: "2px solid #34C94B",
           }}
         >
-          <Section title="Songs" songs={allSongs} genres={genres} onClick={handleCardClick}/>
+          <Section
+            title="Songs"
+            songs={allSongs}
+            genres={genres}
+            onClick={handleCardClick}
+          />
         </Box>
       </div>
       <FaqAccordion faqs={faqsAcc} />
-      {selectedSong && <MusicPlayerBar song={selectedSong}/>}
+      {selectedSong && (
+        <React.Fragment>
+          <hr style={{ border: "3px solid #3b3b3b", margin:"0px" }} />
+          <MusicPlayerBar song={selectedSong} />
+        </React.Fragment>
+      )}
     </div>
   );
 };
