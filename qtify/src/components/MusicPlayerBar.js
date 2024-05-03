@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 
 const MusicPlayerBar = ({ song }) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const togglePlay = () => {
     setIsPlaying(!isPlaying);
@@ -20,13 +19,6 @@ const MusicPlayerBar = ({ song }) => {
     }${seconds}`;
   };
 
-  const handleProgressBarClick = (event) => {
-    const rect = event.target.getBoundingClientRect();
-    const offsetX = event.clientX - rect.left;
-    const totalWidth = rect.width;
-    const clickedPercentage = offsetX / totalWidth;
-    setProgress(clickedPercentage * 100);
-  };
 
   return (
     <Box
@@ -96,7 +88,6 @@ const MusicPlayerBar = ({ song }) => {
             <LinearProgress
               variant="determinate"
               value="30"
-              onClick={handleProgressBarClick}
               sx={{
                 backgroundColor: "#FFFFFF",
                 height: "5px",
