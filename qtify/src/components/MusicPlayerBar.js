@@ -93,7 +93,7 @@ const MusicPlayerBar = ({ song }) => {
                 height: "5px",
                 borderRadius: "10px",
                 color: "#34C94B",
-                "& .css-5xe99f-MuiLinearProgress-bar1": {
+                "& .MuiLinearProgress-bar1Determinate": {
                   backgroundColor: "#34B94C",
                 },
               }}
