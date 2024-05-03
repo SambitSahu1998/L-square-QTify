@@ -4,18 +4,21 @@ import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import Section from "./components/SectionCard";
 import {
+  FAQ_API,
   GENRES_API,
   NEW_ALBUMS_API,
   SONGS_API,
   TOP_ALBUMS_API,
 } from "./apis/api";
 import { Box } from "@mui/material";
+import FaqAccordion from "./components/FaqAccordion";
 
 const App = () => {
   const [topAlbums, setTopAlbums] = useState([]);
   const [newAlbums, setNewAlbums] = useState([]);
   const [allSongs, setAllSongs] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [faqsAcc, setFaqsAcc] = useState([]);
 
   useEffect(() => {
     const fetchTopAlbums = async () => {
@@ -50,10 +53,19 @@ const App = () => {
         console.error("Error Fetching The Genres Array: ", error);
       }
     };
+    const fetchAPI = async () => {
+      try{
+        const response = await axios.get(FAQ_API);
+        setFaqsAcc(response.data.data);
+      }catch(error){
+        console.error("Error Fetching The FAQ Array: ", error);
+      }
+    };
     fetchTopAlbums();
     fetchNewAlbums();
     fetchAllSongs();
     fetchGenres();
+    fetchAPI();
   }, []);
 
   return (
@@ -74,6 +86,7 @@ const App = () => {
           <Section title="Songs" songs={allSongs} genres={genres}/>
         </Box>
       </div>
+      <FaqAccordion faqs={faqsAcc} />
     </div>
   );
 };
