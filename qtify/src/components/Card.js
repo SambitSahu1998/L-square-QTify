@@ -10,11 +10,14 @@ import {
 } from "@mui/material";
 import styles from "../modules/Card.module.css";
 
-const Card = ({ album, isSongSection, numSongs }) => {
+const Card = ({ album, isSongSection, numSongs, onClick }) => {
+  const handleClick = () => {
+    onClick(album);
+  }
   return (
     <React.Fragment>
       {isSongSection === "Songs" ? (
-        <Box className={styles.cardOutlined}>
+        <Box className={styles.cardOutlined} onClick={handleClick} style={{ cursor: 'pointer' }} >
           <MuiCard
             sx={{ width: "159px", height: "215px", borderRadius: "10px" }}
           >

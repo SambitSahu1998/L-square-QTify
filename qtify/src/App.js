@@ -12,6 +12,7 @@ import {
 } from "./apis/api";
 import { Box } from "@mui/material";
 import FaqAccordion from "./components/FaqAccordion";
+import MusicPlayerBar from "./components/MusicPlayerBar";
 
 const App = () => {
   const [topAlbums, setTopAlbums] = useState([]);
@@ -68,6 +69,12 @@ const App = () => {
     fetchAPI();
   }, []);
 
+  const [selectedSong, setSelectedSong] = useState(null);
+
+  const handleCardClick = (song) =>{
+    setSelectedSong(song);
+  }
+
   return (
     <div>
       <Navbar />
@@ -83,10 +90,11 @@ const App = () => {
             borderBottom: "2px solid #34C94B",
           }}
         >
-          <Section title="Songs" songs={allSongs} genres={genres}/>
+          <Section title="Songs" songs={allSongs} genres={genres} onClick={handleCardClick}/>
         </Box>
       </div>
       <FaqAccordion faqs={faqsAcc} />
+      {selectedSong && <MusicPlayerBar song={selectedSong}/>}
     </div>
   );
 };

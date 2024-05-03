@@ -5,7 +5,7 @@ import Card from "./Card";
 import Carousel from "./Carousel";
 import styles from "../modules/SectionCard.module.css";
 
-const Section = ({ title, albums, songs, genres }) => {
+const Section = ({ title, albums, songs, genres, onClick }) => {
   const [showAll, setShowAll] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
 
@@ -88,14 +88,14 @@ const Section = ({ title, albums, songs, genres }) => {
             </TabList>
           </Box>
           <TabPanel value="All" sx={{ padding: "0px", paddingTop: "10px" }}>
-            <Carousel cards={filterSongs("All")} isSongSection="Songs"/>
+            <Carousel cards={filterSongs("All")} isSongSection="Songs" onClick={onClick}/>
           </TabPanel>
           {genres.map((genre) => (
             <TabPanel
               value={genre.key}
               sx={{ padding: "0px", paddingTop: "10px" }}
             >
-              <Carousel cards={filterSongs(genre.key)} isSongSection="Songs"/>
+              <Carousel cards={filterSongs(genre.key)} isSongSection="Songs" onClick={onClick}/>
             </TabPanel>
           ))}
         </TabContext>
