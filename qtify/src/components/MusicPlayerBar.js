@@ -27,7 +27,8 @@ const MusicPlayerBar = ({ song }) => {
         color: "#FFFFFF",
         display: "flex",
         alignItems: "center",
-        padding: "20px",
+        padding: "10px",
+        paddingTop: "7px !important"
       }}
     >
       <div style={{ display: "flex", alignItems: "center" }}>

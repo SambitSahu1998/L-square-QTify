@@ -3,7 +3,7 @@ import { Button, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 import styles from "../modules/SearchBar.module.css";
 
-function SearchBar() {
+const SearchBar = () => {
   return (
     <Box className={styles.SearchBarBox}>
       <input

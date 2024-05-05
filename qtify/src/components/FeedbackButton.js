@@ -1,12 +1,12 @@
 import React from 'react';
 import Feedback from '../modules/FeedbackButton.module.css';
 
-const FeedbackButton = ({text}) => {
+const FeedbackButton = ({text, onFeedbackButtonClick}) => {
   return (
-    <button variant="contained" className={Feedback.feedbackButton}>
+    <button variant="contained" className={Feedback.feedbackButton} onClick={onFeedbackButtonClick}>
         {text}
     </button>
   )
 }
 
-export default FeedbackButton;
+export default FeedbackButton; 

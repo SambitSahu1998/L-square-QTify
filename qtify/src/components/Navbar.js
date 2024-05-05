@@ -5,12 +5,12 @@ import SearchBar from "./SearchBar";
 import FeedbackButton from "./FeedbackButton";
 import styles from "../modules/Navbar.module.css";
 
-const Navbar = () => {
+const Navbar = ({onFeedbackButtonClick}) => {
   return (
     <div className={styles.navbarToolbar}>
       <Logo src={logoImage} alt="QTify Logo" />
       <SearchBar />
-      <FeedbackButton text="Give Feedback" />
+      <FeedbackButton text="Give Feedback" onFeedbackButtonClick={onFeedbackButtonClick}/>
     </div>
   );
 };

@@ -13,6 +13,8 @@ import {
 import { Box } from "@mui/material";
 import FaqAccordion from "./components/FaqAccordion";
 import MusicPlayerBar from "./components/MusicPlayerBar";
+import FeedbackForm from "./components/FeedbackForm";
+import './App.css';
 
 const App = () => {
   const [topAlbums, setTopAlbums] = useState([]);
@@ -20,91 +22,80 @@ const App = () => {
   const [allSongs, setAllSongs] = useState([]);
   const [genres, setGenres] = useState([]);
   const [faqsAcc, setFaqsAcc] = useState([]);
+  const [selectedSong, setSelectedSong] = useState(null);
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
 
   useEffect(() => {
-    const fetchTopAlbums = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(TOP_ALBUMS_API);
-        setTopAlbums(response.data);
-      } catch (error) {
-        console.error("Error Fetching Top Albums Array: ", error);
-      }
-    };
-    const fetchNewAlbums = async () => {
-      try {
-        const response = await axios.get(NEW_ALBUMS_API);
-        setNewAlbums(response.data);
-      } catch (error) {
-        console.error("Error Fetching New Albums Array: ", error);
-      }
-    };
-    const fetchAllSongs = async () => {
-      try {
-        const response = await axios.get(SONGS_API);
-        setAllSongs(response.data);
-      } catch (error) {
-        console.error("Erro Fetching All Songs Array: ", error);
-      }
-    };
-    const fetchGenres = async () => {
-      try {
-        const response = await axios.get(GENRES_API);
-        setGenres(response.data.data);
-      } catch (error) {
-        console.error("Error Fetching The Genres Array: ", error);
-      }
-    };
-    const fetchAPI = async () => {
-      try {
-        const response = await axios.get(FAQ_API);
-        setFaqsAcc(response.data.data);
-      } catch (error) {
-        console.error("Error Fetching The FAQ Array: ", error);
-      }
-    };
-    fetchTopAlbums();
-    fetchNewAlbums();
-    fetchAllSongs();
-    fetchGenres();
-    fetchAPI();
-  }, []);
+        const [topAlbumsResponse, newAlbumsResponse, allSongsResponse, genresResponse, faqsResponse] = await Promise.all([
+          axios.get(TOP_ALBUMS_API),
+          axios.get(NEW_ALBUMS_API),
+          axios.get(SONGS_API),
+          axios.get(GENRES_API),
+          axios.get(FAQ_API)
+        ]);
 
-  const [selectedSong, setSelectedSong] = useState(null);
+        setTopAlbums(topAlbumsResponse.data);
+        setNewAlbums(newAlbumsResponse.data);
+        setAllSongs(allSongsResponse.data);
+        setGenres(genresResponse.data.data);
+        setFaqsAcc(faqsResponse.data.data);
+      } catch (error) {
+        console.error("Error Fetching Data: ", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleCardClick = (song) => {
     setSelectedSong(song);
   };
 
+  const handleFeedbackButtonClick = () => {
+    setShowFeedbackForm(true);
+  };
+
+  const handleCloseFeedbackForm = () => {
+    setShowFeedbackForm(false);
+  };
+
   return (
     <div>
-      <Navbar />
-      <HeroSection />
+      {showFeedbackForm && <div className="overlay" />}
       <div>
-        <Section title="Top Albums" albums={topAlbums} />
-        <div></div>
-        <Section title="New Albums" albums={newAlbums} />
-        <div></div>
-        <Box
-          sx={{
-            borderTop: "2px solid #34C94B",
-            borderBottom: "2px solid #34C94B",
-          }}
-        >
-          <Section
-            title="Songs"
-            songs={allSongs}
-            genres={genres}
-            onClick={handleCardClick}
-          />
-        </Box>
+        <Navbar onFeedbackButtonClick={handleFeedbackButtonClick} />
+        <HeroSection />
+        <div>
+          <Section title="Top Albums" albums={topAlbums} />
+          <div></div>
+          <Section title="New Albums" albums={newAlbums} />
+          <div></div>
+          <Box
+            sx={{
+              borderTop: "2px solid #34C94B",
+              borderBottom: "2px solid #34C94B",
+            }}
+          >
+            <Section
+              title="Songs"
+              songs={allSongs}
+              genres={genres}
+              onClick={handleCardClick}
+            />
+          </Box>
+        </div>
+        <FaqAccordion faqs={faqsAcc} />
+        {selectedSong && (
+          <React.Fragment>
+            <hr style={{ border: "2px solid #3b3b3b", margin: "0px" }} />
+            <MusicPlayerBar song={selectedSong} />
+          </React.Fragment>
+        )}
       </div>
-      <FaqAccordion faqs={faqsAcc} />
-      {selectedSong && (
-        <React.Fragment>
-          <hr style={{ border: "3px solid #3b3b3b", margin:"0px" }} />
-          <MusicPlayerBar song={selectedSong} />
-        </React.Fragment>
-      )}
+      <div  className={showFeedbackForm ? "feedback-form-open" : ""}>
+        {showFeedbackForm && <FeedbackForm onClose={handleCloseFeedbackForm} />}
+      </div>
     </div>
   );
 };
