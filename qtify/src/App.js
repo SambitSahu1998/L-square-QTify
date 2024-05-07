@@ -28,9 +28,24 @@ const App = () => {
   const [mergedAlbums, setMergedAlbums] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [showResults, setShowResults] = useState(false);
+  const [prevScrollY, setPrevScrollY] = useState(window.scrollY);
 
   useEffect(() => {
-    if (filteredData.length > 0) {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY !== prevScrollY) {
+        setShowResults(false);
+      }
+      setPrevScrollY(currentScrollY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [prevScrollY]);
+
+  useEffect(() => {
+    if (filteredData) {
       setShowResults(true);
     } else {
       setShowResults(false);
@@ -101,7 +116,7 @@ const App = () => {
           onFilter={handleFilter}
           onBlur={handleBlur}
         />
-        {showResults && <FloatingAlbumList albumList={filteredData}/>}
+        {(prevScrollY === 0 ) && showResults && <FloatingAlbumList albumList={filteredData}/>}
         <HeroSection />
         <div>
           <Section title="Top Albums" albums={topAlbums} />
