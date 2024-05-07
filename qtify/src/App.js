@@ -29,6 +29,7 @@ const App = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [showResults, setShowResults] = useState(false);
   const [prevScrollY, setPrevScrollY] = useState(window.scrollY);
+  const [initialized, setInitialized] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -52,6 +53,12 @@ const App = () => {
     }
   }, [filteredData]);
 
+  useEffect(()=>{
+    if(initialized){
+      setShowResults(false);
+    }
+  },[initialized]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -74,6 +81,7 @@ const App = () => {
         setAllSongs(allSongsResponse.data);
         setGenres(genresResponse.data.data);
         setFaqsAcc(faqsResponse.data.data);
+        setInitialized(true);
       } catch (error) {
         console.error("Error Fetching Data: ", error);
       }
@@ -116,7 +124,7 @@ const App = () => {
           onFilter={handleFilter}
           onBlur={handleBlur}
         />
-        {(prevScrollY === 0 ) && showResults && <FloatingAlbumList albumList={filteredData}/>}
+        {initialized && (prevScrollY === 0 ) && showResults && <FloatingAlbumList albumList={filteredData}/>}
         <HeroSection />
         <div>
           <Section title="Top Albums" albums={topAlbums} />
