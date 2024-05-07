@@ -1,7 +1,7 @@
 .SearchBarBox {
     display: flex;
     align-items: center;
-    width: 568px;
+    width: 45%;
     border-radius: 8px;
     border: 2px solid #121212;
     background-color: #ffffff;

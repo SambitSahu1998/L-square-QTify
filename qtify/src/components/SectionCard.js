@@ -45,12 +45,12 @@ const Section = ({ title, albums, songs, genres, onClick }) => {
         <Grid container spacing={1}>
           {albums.map((album) => (
             <Grid item key={album.id}>
-              <Card album={album} numSongs={album.songs.length}/>
+              <Card album={album} numSongs={album.songs.length} />
             </Grid>
           ))}
         </Grid>
       ) : (
-        title !== "Songs" && <Carousel cards={albums}/>
+        title !== "Songs" && <Carousel cards={albums} />
       )}
       {title === "Songs" && (
         <TabContext value={activeTab}>

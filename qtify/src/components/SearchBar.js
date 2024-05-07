@@ -1,15 +1,29 @@
 import React from "react";
+import {useState} from "react";
+
 import { Button, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/SearchOutlined";
 import styles from "../modules/SearchBar.module.css";
 
-const SearchBar = () => {
+const SearchBar = ({totalAlbums, onFilter, onBlur}) => {
+  const [searchTerm, setSearchTerm]= useState("");
+  const handleInputChange = (event) => {
+    const value = event.target.value;
+    setSearchTerm(value);
+    const filtered = totalAlbums.filter((album) =>
+      album.title.toLowerCase().includes(value.toLowerCase())
+    );
+    onFilter(filtered);
+  }
   return (
     <Box className={styles.SearchBarBox}>
       <input
         type="text"
         placeholder="Search an album of your choice"
         className={styles.SearchInput}
+        value={searchTerm}
+        onChange={handleInputChange}
+        onBlur={onBlur}
       />
       <Button
         variant="text"

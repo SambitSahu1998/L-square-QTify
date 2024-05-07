@@ -14,7 +14,8 @@ import { Box } from "@mui/material";
 import FaqAccordion from "./components/FaqAccordion";
 import MusicPlayerBar from "./components/MusicPlayerBar";
 import FeedbackForm from "./components/FeedbackForm";
-import './App.css';
+import "./App.css";
+import FloatingAlbumList from "./components/FloatingAlbumList";
 
 const App = () => {
   const [topAlbums, setTopAlbums] = useState([]);
@@ -24,16 +25,33 @@ const App = () => {
   const [faqsAcc, setFaqsAcc] = useState([]);
   const [selectedSong, setSelectedSong] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [mergedAlbums, setMergedAlbums] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [showResults, setShowResults] = useState(false);
+
+  useEffect(() => {
+    if (filteredData.length > 0) {
+      setShowResults(true);
+    } else {
+      setShowResults(false);
+    }
+  }, [filteredData]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [topAlbumsResponse, newAlbumsResponse, allSongsResponse, genresResponse, faqsResponse] = await Promise.all([
+        const [
+          topAlbumsResponse,
+          newAlbumsResponse,
+          allSongsResponse,
+          genresResponse,
+          faqsResponse,
+        ] = await Promise.all([
           axios.get(TOP_ALBUMS_API),
           axios.get(NEW_ALBUMS_API),
           axios.get(SONGS_API),
           axios.get(GENRES_API),
-          axios.get(FAQ_API)
+          axios.get(FAQ_API),
         ]);
 
         setTopAlbums(topAlbumsResponse.data);
@@ -48,6 +66,11 @@ const App = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const merged = [...topAlbums, ...newAlbums];
+    setMergedAlbums(merged);
+  }, [topAlbums, newAlbums]);
+
   const handleCardClick = (song) => {
     setSelectedSong(song);
   };
@@ -60,11 +83,25 @@ const App = () => {
     setShowFeedbackForm(false);
   };
 
+  const handleFilter = (filterData) => {
+    setFilteredData(filterData);
+  };
+
+  const handleBlur = () => {
+    setShowResults(false);
+  };
+
   return (
     <div>
       {showFeedbackForm && <div className="overlay" />}
       <div>
-        <Navbar onFeedbackButtonClick={handleFeedbackButtonClick} />
+        <Navbar
+          onFeedbackButtonClick={handleFeedbackButtonClick}
+          totalAlbums={mergedAlbums}
+          onFilter={handleFilter}
+          onBlur={handleBlur}
+        />
+        {showResults && <FloatingAlbumList albumList={filteredData}/>}
         <HeroSection />
         <div>
           <Section title="Top Albums" albums={topAlbums} />
@@ -93,7 +130,7 @@ const App = () => {
           </React.Fragment>
         )}
       </div>
-      <div  className={showFeedbackForm ? "feedback-form-open" : ""}>
+      <div className={showFeedbackForm ? "feedback-form-open" : ""}>
         {showFeedbackForm && <FeedbackForm onClose={handleCloseFeedbackForm} />}
       </div>
     </div>
